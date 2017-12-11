@@ -1,10 +1,8 @@
 from lxml import html
 import requests
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
-import itertools
 
 page = requests.get('https://nips.cc/Conferences/2017/Schedule?type=Poster')
 tree = html.fromstring(page.content)
@@ -29,22 +27,35 @@ for word in words_list_title:
     else:
         word_count[word] = word_count[word] + 1
 
-#print(word_count)
-
-#for word in sorted(word_count, key=word_count.get, reverse=True):
-    # Make a dataframe and store words and frequencies
-
 df = pd.DataFrame.from_dict(word_count, orient='index')
-df.columns = ['freq']
+df.columns = ['frequency']
+df1 = df.sort_values(by='frequency', ascending=False)
+#print(df1.head(50))
 
-#print(df)
+# Drop the rows of words like 'the' and 'of' that don't relate to the content of the paper
+df2 = df1.drop(['for', 'of', 'with', 'and', 'in', 'a', 'the', 'to', 'on', 'from', 'via', 'using', 'by'], axis=0)
+#print(df2.head(50))
 
-#df = df.rename({'0': 'Occurrences'})
-#print(df.columns.values)
-df1 = df.sort_values(by='freq', ascending=False)
-print(df1)
+plt.rcdefaults()
+fig, ax = plt.subplots()
+words_list = df2.index.tolist()
+y_pos = np.arange(len(words_list))
+frequency = df2['frequency']    
+ax.barh(y_pos, frequency, align='center',
+        color='green', ecolor='black')
+ax.set_yticks(y_pos)
+ax.set_yticklabels(words)
+ax.invert_yaxis()  # labels read top-to-bottom
+ax.set_xlabel('Number of Occurrences')
+ax.set_title('Which Words are Used Most Frequently in Accepted Papers at NIPS 2017?')
 
-    #print(word, word_count[word])
+plt.show()
+plt.savefig('words-in-title-freq.jpg')
+
+
+
+
+
 
 
 """
