@@ -1,26 +1,98 @@
 from lxml import html
 import requests
+import operator
 import matplotlib as plt
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 import itertools
 
-
 page = requests.get('https://nips.cc/Conferences/2017/Schedule?type=Poster')
 tree = html.fromstring(page.content)
-
-#posters = tree.xpath('//div[@class="maincard narrower Poster"]/text()')
 titles = tree.xpath('//div[@class="maincardBody"]/text()')
 
-#print('Posters: ', posters)
-#print('Titles: ', titles)
-print(len(titles))
+# For each title, split the title up into a list of lowercase words
+words_list_title = []
 for title in titles:
     words = title.split(" ")
-    print(words)
+    for word in words:
+        word = word.lower()
+        words_list_title.append(word)
+    # The result is a bunch of lists, each representing a title
+    #print(words_list_title)
 
 
+# Count the frequency of word occurrences
+word_count = {}
+for word in words_list_title:
+    if not word in word_count:
+        word_count[word] = 1
+    else:
+        word_count[word] = word_count[word] + 1
+
+for word in sorted(word_count, key=word_count.get, reverse=True):
+    print(word, word_count[word])
+
+
+    # Get the dictionary as a list of tuples starting with words that have the highest frequency
+#sorted_word_count = sorted(word_count.items(), key=operator.itemgetter(1), reversed=True)
+#print(sorted_word_count)
+
+    #for title in words_list_
+    #words_list_all_titles.append(words_list_title)
+
+#words = title.split(" ")
+#print(words)
+#uniqWords = sorted(set(words_list_all_titles)) #remove duplicate words and sort
+#for word in uniqWords:
+    #print(words_list_all_titles.count(word), word)
+
+
+"""
+for title in titles:
+    # Split each title into a list of words and make them all lowercase
+    words = title.split(" ")
+    words_list_title = []
+    for word in words:
+        word = word.lower()
+        print(word)
+        words_list_title.append(word)
+    #print(words)
+    #print(words_list)
+words_list_all_titles = []
+words_list_all_titles.append(words_list_title)
+print(words_list_all_titles[0])
+
+# Make a dict with the word as key and # of occurences as value
+word_count = {}
+for word in words_list_all_titles:
+    if not word in word_count:
+        word_count[word] = 1
+    else:
+        word_count[word] = word_count[word] + 1
+print(word_count)
+"""
+
+"""
+#def count_topics():
+# Count the number of times a word is used over all the titles
+def word_counter():
+    for title in titles:
+        words = title.split(" ").lower()
+        # Store each word as a key in a dict, and update the value with how many times the word has occured
+        word_count = {}
+        for word in title:
+            if not word in word_count:
+                word_count[word] = 1
+            else:
+                word_count[word] = word_count[word] + 1
+    print(word_count)
+    return word_count
+
+word_counter()
+"""
+
+"""
 def word_counter(df1):
     word_count = {}
     for word in title:
@@ -65,6 +137,7 @@ word_count = word_counter(df1)
 word_series = sort_by_least_popular(word_count)
 print("Plotting Top 20 Words")
 plot_top_words()
+"""
 
 
 # Get all of the words from each title
