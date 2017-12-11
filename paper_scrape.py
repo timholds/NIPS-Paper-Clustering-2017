@@ -8,6 +8,9 @@ page = requests.get('https://nips.cc/Conferences/2017/Schedule?type=Poster')
 tree = html.fromstring(page.content)
 titles = tree.xpath('//div[@class="maincardBody"]/text()')
 
+#with open('paper-titles.txt', 'r') as myfile:
+    #titles = myfile.read().replace('\n', '')
+
 # For each title, split the title up into a list of lowercase words
 words_list_title = []
 for title in titles:
@@ -56,13 +59,19 @@ for i in range(0, len(keywords)):
     for id in id_title_df.index.values:
         titles = id_title_df.iloc[id]#, 'titles']
         titles = titles.to_string()
-        for title in titles:
+        #print(titles)
+        #for title in titles:
             #print(title)
-            title_words = title.split(' ')
-            for word in title_words:
-                word = word.lower()
-                if word in keyword:
-                    keywords.at[word]['ids'].append(id)
+            #title_words = title.split(' ')
+        for word in titles:
+            word = word.lower()
+            #print('word')
+            print(word)
+            #print('keyword')
+            #print(keyword)
+            if word in keyword:
+                #keywords.at[word]['ids'].append(id)
+                keywords.loc[word]['ids'].append(id)
 
 print(keywords)
 
