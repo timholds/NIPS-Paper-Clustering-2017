@@ -1,6 +1,5 @@
 from lxml import html
 import requests
-import operator
 import matplotlib as plt
 import numpy as np
 import pandas as pd
@@ -30,8 +29,45 @@ for word in words_list_title:
     else:
         word_count[word] = word_count[word] + 1
 
-for word in sorted(word_count, key=word_count.get, reverse=True):
-    print(word, word_count[word])
+#print(word_count)
+
+#for word in sorted(word_count, key=word_count.get, reverse=True):
+    # Make a dataframe and store words and frequencies
+
+df = pd.DataFrame.from_dict(word_count, orient='index')
+df.columns = ['freq']
+
+#print(df)
+
+#df = df.rename({'0': 'Occurrences'})
+#print(df.columns.values)
+df1 = df.sort_values(by='freq', ascending=False)
+print(df1)
+
+    #print(word, word_count[word])
+
+
+"""
+plt.rcdefaults()
+fig, ax = plt.subplots()
+
+# Example data
+people = ('Tom', 'Dick', 'Harry', 'Slim', 'Jim')
+words = # get the first 10 words from the
+y_pos = np.arange(len(people))
+performance = 3 + 10 * np.random.rand(len(people))
+error = np.random.rand(len(people))
+
+ax.barh(y_pos, performance, xerr=error, align='center',
+        color='green', ecolor='black')
+ax.set_yticks(y_pos)
+ax.set_yticklabels(people)
+ax.invert_yaxis()  # labels read top-to-bottom
+ax.set_xlabel('Performance')
+ax.set_title('How fast do you want to go today?')
+
+plt.show()
+
 
 
     # Get the dictionary as a list of tuples starting with words that have the highest frequency
@@ -46,7 +82,7 @@ for word in sorted(word_count, key=word_count.get, reverse=True):
 #uniqWords = sorted(set(words_list_all_titles)) #remove duplicate words and sort
 #for word in uniqWords:
     #print(words_list_all_titles.count(word), word)
-
+"""
 
 """
 for title in titles:
