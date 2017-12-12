@@ -40,8 +40,9 @@ df1 = df.sort_values(by='frequency', ascending=False)
 
 # Drop the rows of stopwords
 df2 = df1.drop(['for', 'of', 'with', 'and', 'in', 'a', 'the', 'to', 'on', 'from', 'via', 'using', 'by'], axis=0)
-print(df2.head(1))
+print(df2.head(50))
 
+# -----------Below this line, code is not working yet
 # Keywords are the top 50 most commonly occurring words in titles, stopwords aside
 keywords = df2.head(50)
 keywords['ids'] = np.empty((len(keywords), 0)).tolist()
@@ -63,6 +64,8 @@ for i in range(0, len(keywords)):
         #for title in titles:
             #print(title)
             #title_words = title.split(' ')
+
+        """
         for word in titles:
             word = word.lower()
             #print('word')
@@ -72,6 +75,7 @@ for i in range(0, len(keywords)):
             if word in keyword:
                 #keywords.at[word]['ids'].append(id)
                 keywords.loc[word]['ids'].append(id)
+        """
 
 print(keywords)
 
