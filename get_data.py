@@ -1,9 +1,9 @@
 from lxml import html
-from lxml import etree
 import requests
 import re
 import time
 
+# Get the titles of all the papers
 homepage = requests.get('https://nips.cc/Conferences/2017/Schedule?type=Poster')
 tree = html.fromstring(homepage.content)
 titles = tree.xpath('//div[@class="maincardBody"]/text()')
@@ -14,9 +14,12 @@ with open('paper-titles.txt', 'w+') as f:
         f.write(title + '\n')
 
 
-# Get info that will find the page with the paper's abstract
+# Get the links to each paper's abstract page
 paper_numbers = tree.xpath('//div[@onclick]/div/@id')
+print(type(paper_numbers))
 links = []
+print(type(links))
+
 
 for i in range(len(paper_numbers)):
     paper = paper_numbers[i]
@@ -27,22 +30,27 @@ for i in range(len(paper_numbers)):
         # Make the new url and add it to the list of links
         link =  'https://nips.cc/Conferences/2017/Schedule?showEvent=' + item
         links.append(link)
-        # Parse the paper's page to get the abstract
-        paper_page = requests.get(link)
-        tree_1 = html.fromstring(paper_page.content)
-        abstracts_list = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
-        #print(abstracts_list)
-        time.sleep(.1)
-#print(links)
 
 #Save the links
 with open('paper-links.txt', 'w+') as f:
-    for paper in paper_numbers:
-        f.write(paper + '\n')
+    for link in links:
+        f.write(link + '\n')
+
+# Get the abstracts
+abstract_list = []
+for link in links:
+    # Parse the paper's page to get the abstract
+    paper_page = requests.get(link)
+    tree_1 = html.fromstring(paper_page.content)
+    abstract = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
+    abstract_list.append(abstract)
+    # print(abstracts_list)
+    time.sleep(.1)
+
 
 # Save the abstracts
 with open('paper-abstracts.txt', 'w+') as f:
-    for abstract in abstracts_list:
+    for abstract in abstract_list:
         f.write(abstract + '\n')
 
 #
