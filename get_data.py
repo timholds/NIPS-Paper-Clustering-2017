@@ -1,6 +1,7 @@
 from lxml import html
 from lxml import etree
 import requests
+import re
 
 page = requests.get('https://nips.cc/Conferences/2017/Schedule?type=Poster')
 tree = html.fromstring(page.content)
@@ -10,11 +11,16 @@ paper_numbers = tree.xpath('//div[@onclick]/div/@id')
 print(paper_numbers)
 
 # For every poster, get the link to the poster page
+links = []
 for i in range(len(paper_numbers)):
     paper = paper_numbers[i]
-    #paper_numbers = # Trim paper to just the number
-    link =  'https://nips.cc/Conferences/2017/Schedule/showEvent=' + paper_number
-    #print(link)
+    #paper_number = int(''.join(filter(str.isdigit, paper)))
+    paper_number = re.findall(r'\d+', paper)
+
+    for item in paper_number:
+        link =  'https://nips.cc/Conferences/2017/Schedule/showEvent=' + item
+        links.append(link)
+print(links)
 
 # Save the titles to a txt file
 with open('paper-titles.txt', 'w+') as f:
