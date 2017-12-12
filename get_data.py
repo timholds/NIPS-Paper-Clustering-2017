@@ -2,32 +2,19 @@ from lxml import html
 from lxml import etree
 import requests
 
-    page = requests.get('https://nips.cc/Conferences/2017/Schedule?type=Poster')
-    tree = html.fromstring(page.content)
+page = requests.get('https://nips.cc/Conferences/2017/Schedule?type=Poster')
+tree = html.fromstring(page.content)
 titles = tree.xpath('//div[@class="maincardBody"]/text()')
-#titles_value = tree.xpath('//div[@onclick]/div/text()')
-#print(titles_value)
+paper_numbers = tree.xpath('//div[@onclick]/div/@id')
 
-#root = etree.parse('https://nips.cc/Conferences/2017/Schedule?type=Poster').getroot()
-
-#for div in root.iterdescendants("div"):
-    #cls = div.attrib.get("class")
-
-tree.get()
-
-for e in paper_numbers:
-    print(e.attrib.get)
-
-paper_numbers = tree.xpath('//div[@onclick]/div[@class="maincard narrower Poster"]/id')
-element.get('attribute-name')
-element.get('id')
-                #tree.xpath('//h3[@data-analytics]/a/span/text()')
-                #tree.xpath('//h3[@data-analytics]/a/@href')
-#paper_numbers = tree.xpath('//div[@class="maincard narrower Poster"]/id/text()')
-#paper_numbers = tree.xpath('//div[contains(@class, "maincard narrower Poster")]//id/value()')
-#paper_numbers = tree.xpath('//div[@onclick]/div/id/text()')
 print(paper_numbers)
 
+# For every poster, get the link to the poster page
+for i in range(len(paper_numbers)):
+    paper = paper_numbers[i]
+    #paper_numbers = # Trim paper to just the number
+    link =  'https://nips.cc/Conferences/2017/Schedule/showEvent=' + paper_number
+    #print(link)
 
 # Save the titles to a txt file
 with open('paper-titles.txt', 'w+') as f:
