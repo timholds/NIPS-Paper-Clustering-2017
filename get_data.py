@@ -48,30 +48,45 @@ def get_paper_links_from_web():
 
 # Read the links in from a txt file
 def read_paper_links_from_file():
+    links = []
     with open('paper-links.txt', 'r') as f:
-        links = f.read()
+        for line in f:
+            line = f.readline()
+            links.append(line)
     return links
 
 # Get the abstracts from the web and save them to a text file
 def get_paper_abstracts_from_web(links):
+    # Store all of the abstracts in abstract_list
     abstract_list = []
     for link in links:
-        # Parse the paper's page to get the abstract
-        paper_page = requests.get(link)
-        tree_1 = html.fromstring(paper_page.content)
-        abstract = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
-        abstract_list.append(abstract)
-        # print(abstracts_list)
-        time.sleep(.01)
+        print(link)
+        # Try parsing the paper's page to get the abstract
+        try:
+            paper_page = requests.get(link)
+            tree_1 = html.fromstring(paper_page.content)
+            abstracts = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
+            # Since abstracts should be a list of length 1
+            for abstract in abstracts:
+                abstract_list.append(abstract)
+        except (requests.exceptions.MissingSchema):
+            print('Missing link')
+        #time.sleep(.01)
 
-    print('abstract_list type is' + type(abstract_list))
-    print((abstract_list))
+    # Save the abstracts
+    #with open('paper-abstracts.txt', 'w+') as f:
+        #f.writelines(abstract_list)
+        # Save the links to a file
 
     # Save the abstracts
     with open('paper-abstracts.txt', 'w+') as f:
         for abstract in abstract_list:
-            print(type(abstract))
-            f.write(abstract + '\n')
+            f.write(abstract+ '\n')
+        # Since abstract_list is a list of lists
+        #f.write(abstract_list)
+        #for abstract in abstract_list:
+        #f.writelines()
+        #f.write([abstract] + '\n')
 
 # Read the abstracts in from a txt file
 def read_paper_abstracts_from_file():
@@ -80,7 +95,7 @@ def read_paper_abstracts_from_file():
     return abstracts
 
 def get_data_from_web():
-    get_paper_titles_from_web()
+    #get_paper_titles_from_web()
     links = get_paper_links_from_web()
     get_paper_abstracts_from_web(links)
 
@@ -92,22 +107,8 @@ def get_data_from_txt():
 if __name__ == '__main__':
     get_data_from_txt()
 
-#
+def run_all():
+    get_data_from_web()
+    get_data_from_txt()
 
-#abstracts_df = pd.DataFrame(index=titles)
-#print(abstracts_df)
-
-
-# Get a list of links to abstracts
-#for title in titles:
-    #abstracts_df[paper] = abstract
-
-"""
-# For each paper, follow the link to the abstract and extract the abstract from that page
-abstracts = tree.xpath('//div[@class="abstractContainer"]/text()')
-with open('abstracts.txt', 'w+') as f:
-    for abstract in abstracts:
-        f.write(abstract + '\n')
-
-print(titles)
-"""
+#run_all()
