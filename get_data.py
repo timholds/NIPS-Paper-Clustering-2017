@@ -3,55 +3,93 @@ import requests
 import re
 import time
 
-# Get the titles of all the papers
-homepage = requests.get('https://nips.cc/Conferences/2017/Schedule?type=Poster')
-tree = html.fromstring(homepage.content)
-titles = tree.xpath('//div[@class="maincardBody"]/text()')
+# Get the titles of all the papers and write them to a file
+def get_paper_titles_from_web():
+    homepage = requests.get('https://nips.cc/Conferences/2017/Schedule?type=Poster')
+    tree = html.fromstring(homepage.content)
+    titles = tree.xpath('//div[@class="maincardBody"]/text()')
 
-# Save the titles
-with open('paper-titles.txt', 'w+') as f:
-    for title in titles:
-        f.write(title + '\n')
+    with open('paper-titles.txt', 'w+') as f:
+        for title in titles:
+            f.write(title + '\n')
 
+# Read the titles in from a txt file
+def read_paper_titles_from_file():
+    with open('paper-titles.txt', 'r') as f:
+        titles = f.read()
+    return titles
 
-# Get the links to each paper's abstract page
-paper_numbers = tree.xpath('//div[@onclick]/div/@id')
-print(type(paper_numbers))
-links = []
-print(type(links))
+# Get the links to all the paper's individual pages and save the links to a file
+def get_paper_links_from_web():
+    homepage = requests.get('https://nips.cc/Conferences/2017/Schedule?type=Poster')
+    tree = html.fromstring(homepage.content)
+    paper_numbers = tree.xpath('//div[@onclick]/div/@id')
 
+    # Create an empty list to store the links to each paper
+    links = []
+    for i in range(len(paper_numbers)):
+        paper = paper_numbers[i]
+        paper_number = re.findall(r'\d+', paper)
 
-for i in range(len(paper_numbers)):
-    paper = paper_numbers[i]
-    #paper_number = int(''.join(filter(str.isdigit, paper)))
-    paper_number = re.findall(r'\d+', paper)
+        # Use each paper number to generate the link to the paper's individual page
+        for item in paper_number: # Since paper_number turns out to be a one item list
+            # Make the new url and add it to the list of links
+            link = 'https://nips.cc/Conferences/2017/Schedule?showEvent=' + item
+            links.append(link)
 
-    for item in paper_number: # Since paper_number turns out to be a one item list
-        # Make the new url and add it to the list of links
-        link =  'https://nips.cc/Conferences/2017/Schedule?showEvent=' + item
-        links.append(link)
+    #Save the links to a file
+    with open('paper-links.txt', 'w+') as f:
+        for link in links:
+            f.write(link + '\n')
 
-#Save the links
-with open('paper-links.txt', 'w+') as f:
+    return links
+
+# Read the links in from a txt file
+def read_paper_links_from_file():
+    with open('paper-links.txt', 'r') as f:
+        links = f.read()
+    return links
+
+# Get the abstracts from the web and save them to a text file
+def get_paper_abstracts_from_web(links):
+    abstract_list = []
     for link in links:
-        f.write(link + '\n')
+        # Parse the paper's page to get the abstract
+        paper_page = requests.get(link)
+        tree_1 = html.fromstring(paper_page.content)
+        abstract = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
+        abstract_list.append(abstract)
+        # print(abstracts_list)
+        time.sleep(.01)
 
-# Get the abstracts
-abstract_list = []
-for link in links:
-    # Parse the paper's page to get the abstract
-    paper_page = requests.get(link)
-    tree_1 = html.fromstring(paper_page.content)
-    abstract = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
-    abstract_list.append(abstract)
-    # print(abstracts_list)
-    time.sleep(.1)
+    print('abstract_list type is' + type(abstract_list))
+    print((abstract_list))
 
+    # Save the abstracts
+    with open('paper-abstracts.txt', 'w+') as f:
+        for abstract in abstract_list:
+            print(type(abstract))
+            f.write(abstract + '\n')
 
-# Save the abstracts
-with open('paper-abstracts.txt', 'w+') as f:
-    for abstract in abstract_list:
-        f.write(abstract + '\n')
+# Read the abstracts in from a txt file
+def read_paper_abstracts_from_file():
+    with open('paper-abstracts.txt', 'r') as f:
+        abstracts = f.read()
+    return abstracts
+
+if __name__ == 'get_data_from_web':
+    get_paper_titles()
+    links = get_paper_links()
+    get_paper_abstracts(links)
+
+if __name__ == 'get_data_from_txt':
+
+if __name__ == 'get_data_for_clustering':
+    # TODO figure out what format I want the titles and abstracts returned in
+
+if __name__ == '__main__':
+    links = get_paper_links()
+    get_paper_abstracts(links)
 
 #
 
