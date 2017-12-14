@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ed1c0646-2b95-498b-9925-bd452e5a7781" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/document_cluster" afterPath="$PROJECT_DIR$/document_cluster" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/get_data.py" afterPath="$PROJECT_DIR$/get_data.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/paper-links.txt" afterPath="$PROJECT_DIR$/paper-links.txt" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -40,13 +38,15 @@
       <file leaf-file-name="get_data.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/get_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="46" column="16" lean-forward="false" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
+            <state relative-caret-position="286">
+              <caret line="92" column="4" lean-forward="true" selection-start-line="92" selection-start-column="4" selection-end-line="92" selection-end-column="4" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <element signature="e#737#1619#0" expanded="false" />
-                <marker date="1513211163000" expanded="false" signature="153:456" ph="..." />
-                <marker date="1513211163000" expanded="false" signature="1880:2515" ph="..." />
+                <element signature="e#158#475#0" expanded="false" />
+                <element signature="e#553#637#0" expanded="false" />
+                <element signature="e#756#1638#0" expanded="false" />
+                <element signature="e#1714#1795#0" expanded="false" />
+                <element signature="e#1904#2536#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -508,13 +508,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/get_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="46" column="16" lean-forward="false" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
+        <state relative-caret-position="286">
+          <caret line="92" column="4" lean-forward="true" selection-start-line="92" selection-start-column="4" selection-end-line="92" selection-end-column="4" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <element signature="e#737#1619#0" expanded="false" />
-            <marker date="1513211163000" expanded="false" signature="153:456" ph="..." />
-            <marker date="1513211163000" expanded="false" signature="1880:2515" ph="..." />
+            <element signature="e#158#475#0" expanded="false" />
+            <element signature="e#553#637#0" expanded="false" />
+            <element signature="e#756#1638#0" expanded="false" />
+            <element signature="e#1714#1795#0" expanded="false" />
+            <element signature="e#1904#2536#0" expanded="false" />
           </folding>
         </state>
       </provider>

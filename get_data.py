@@ -13,6 +13,8 @@ def get_paper_titles_from_web():
         for title in titles:
             f.write(title + '\n')
 
+    return titles
+
 # Read the titles in from a txt file
 def read_paper_titles_from_file():
     with open('paper-titles.txt', 'r') as f:
@@ -77,19 +79,18 @@ def read_paper_abstracts_from_file():
         abstracts = f.read()
     return abstracts
 
-if __name__ == 'get_data_from_web':
-    get_paper_titles()
-    links = get_paper_links()
-    get_paper_abstracts(links)
+def get_data_from_web():
+    get_paper_titles_from_web()
+    links = get_paper_links_from_web()
+    get_paper_abstracts_from_web(links)
 
-if __name__ == 'get_data_from_txt':
-
-if __name__ == 'get_data_for_clustering':
-    # TODO figure out what format I want the titles and abstracts returned in
+def get_data_from_txt():
+    titles = read_paper_titles_from_file()
+    abstracts = read_paper_abstracts_from_file()
+    return [titles, abstracts]
 
 if __name__ == '__main__':
-    links = get_paper_links()
-    get_paper_abstracts(links)
+    get_data_from_txt()
 
 #
 
