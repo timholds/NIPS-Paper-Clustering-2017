@@ -2,6 +2,7 @@ from lxml import html
 import requests
 import re
 import pandas as pd
+import numpy as np
 
 # A dataframe to store the titles, links, and abstracts eventually
 df = pd.DataFrame()
@@ -100,19 +101,22 @@ def get_paper_abstracts_from_web(links):
         for abstract in abstract_list:
             f.write(abstract+ '\n')
 
-
+# TODO - for each row of dataframe: get a link, try scraping abstract, put in abstract column of the row
 # Put each abstract into its respective place in the dataframe, where title, link, and abstract for a paper are on one row
 def read_paper_abstracts_from_file_to_df(df):
     abstract_list = []
-    for row in df:
-        link = df.loc[row, 'Links']
+    df['Abstracts'] = np.nan
+    for row in df.iterrows():
+        link = df.loc[row,'Links']
+        print(link)
         try:
             paper_page = requests.get(link)
             tree_1 = html.fromstring(paper_page.content)
             abstracts = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
             # Since abstracts should be a list of length 1
             for abstract in abstracts:
-                df.loc[row, 'Abstracts'] = abstract
+                #df.loc[row, 'Abstracts'] = abstract
+                df.insert(row, 'Abstract')
         except (requests.exceptions.MissingSchema):
             print('Missing link')
 
