@@ -1,7 +1,10 @@
 from lxml import html
 import requests
 import re
-import time
+import pandas as pd
+
+# A dataframe to store the titles, links, and abstracts eventually
+df = pd.DataFrame()
 
 # Get the titles of all the papers and write them to a file
 def get_paper_titles_from_web():
@@ -16,10 +19,12 @@ def get_paper_titles_from_web():
     return titles
 
 # Read the titles in from a txt file
-def read_paper_titles_from_file():
+def read_paper_titles_from_file(df):
     with open('paper-titles.txt', 'r') as f:
-        titles = f.read()
-    return titles
+        titles = f.read().split('\n')
+    print('Number of titles ' + str(len(titles)))
+    df['Titles'] = titles[:679]
+    return df
 
 # Get the links to all the paper's individual pages and save the links to a file
 def get_paper_links_from_web():
@@ -44,16 +49,33 @@ def get_paper_links_from_web():
         for link in links:
             f.write(link + '\n')
 
+    print('Number of links: ' + str(len(links)))
     return links
 
 # Read the links in from a txt file
-def read_paper_links_from_file():
+def read_paper_links_from_file(df):
     links = []
-    with open('paper-links.txt', 'r') as f:
+
+    with open('paper-links.txt') as f:
+        #for line in f:
+        link_list = f.readlines()
+        for link in link_list:
+            links.append(link)
+
+    """
+    with open('paper-links.txt') as f:
         for line in f:
-            line = f.readline()
-            links.append(line)
-    return links
+            link = f.readline()
+            links.append(link)
+        #line = f.readline()
+        #for count, line in enumerate(f):
+        #line =
+    """
+
+        #print(line)
+    print('Number of links is ' +str(len(links)))
+    df['Links'] = links
+    return df
 
 # Get the abstracts from the web and save them to a text file
 def get_paper_abstracts_from_web(links):
@@ -74,33 +96,46 @@ def get_paper_abstracts_from_web(links):
         #time.sleep(.01)
 
     # Save the abstracts
-    #with open('paper-abstracts.txt', 'w+') as f:
-        #f.writelines(abstract_list)
-        # Save the links to a file
-
-    # Save the abstracts
     with open('paper-abstracts.txt', 'w+') as f:
         for abstract in abstract_list:
             f.write(abstract+ '\n')
-        # Since abstract_list is a list of lists
-        #f.write(abstract_list)
-        #for abstract in abstract_list:
-        #f.writelines()
-        #f.write([abstract] + '\n')
+
+
+# Put each abstract into its respective place in the dataframe, where title, link, and abstract for a paper are on one row
+def read_paper_abstracts_from_file_to_df(df):
+    abstract_list = []
+    for row in df:
+        link = df.loc[row, 'Links']
+        try:
+            paper_page = requests.get(link)
+            tree_1 = html.fromstring(paper_page.content)
+            abstracts = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
+            # Since abstracts should be a list of length 1
+            for abstract in abstracts:
+                df.loc[row, 'Abstracts'] = abstract
+        except (requests.exceptions.MissingSchema):
+            print('Missing link')
+
+    return df
 
 # Read the abstracts in from a txt file
+# FIXME - issue is that there are less abstracts that titles, so when we read from file we
+# dont know which abstract belongs to which title / which row of df
 def read_paper_abstracts_from_file():
     with open('paper-abstracts.txt', 'r') as f:
-        abstracts = f.read()
+        abstracts = f.read().split('\n')
+    print('Number of abstracts: ' + str(len(abstracts)))
+    #for
+        #df['abstracts'] = abstracts
     return abstracts
 
 def get_data_from_web():
-    #get_paper_titles_from_web()
+    get_paper_titles_from_web()
     links = get_paper_links_from_web()
     get_paper_abstracts_from_web(links)
 
 def get_data_from_txt():
-    titles = read_paper_titles_from_file()
+    titles = read_paper_titles_from_file(df)
     abstracts = read_paper_abstracts_from_file()
     return [titles, abstracts]
 
@@ -112,3 +147,9 @@ def run_all():
     get_data_from_txt()
 
 #run_all()
+read_paper_titles_from_file(df)
+read_paper_links_from_file(df)
+read_paper_abstracts_from_file_to_df(df)
+#get_paper_links_from_web()
+
+print(df)
