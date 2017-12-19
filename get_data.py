@@ -78,6 +78,7 @@ def read_paper_links_from_file(df):
     df['Links'] = links
     return df
 
+
 # Get the abstracts from the web and save them to a text file
 def get_paper_abstracts_from_web(links):
     # Store all of the abstracts in abstract_list
@@ -101,11 +102,29 @@ def get_paper_abstracts_from_web(links):
         for abstract in abstract_list:
             f.write(abstract+ '\n')
 
+
+
 # TODO - for each row of dataframe: get a link, try scraping abstract, put in abstract column of the row
 # Put each abstract into its respective place in the dataframe, where title, link, and abstract for a paper are on one row
 def read_paper_abstracts_from_file_to_df(df):
+    print(df)
     abstract_list = []
-    df['Abstracts'] = np.nan
+
+    # Get a series object of all the links to paper's URLs
+    links = df.loc[:, 'Links']
+
+    for link in iter(links):
+        print(link)
+        try:
+            paper_page = requests.get(link)
+            tree_1 = html.fromstring(paper_page.content)
+            abstracts = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
+            # TODO Append that mother fucker to that part of the dataframe under 'Abstracts'
+        except (requests.exceptions.MissingSchema):
+            print('Missing link')
+            # TODO put -1 in that row of the dataframe under 'Abstracts'
+
+    """
     for row in df.iterrows():
         link = df.loc[row,'Links']
         print(link)
@@ -120,6 +139,9 @@ def read_paper_abstracts_from_file_to_df(df):
         except (requests.exceptions.MissingSchema):
             print('Missing link')
 
+
+    """
+
     return df
 
 # Read the abstracts in from a txt file
@@ -129,8 +151,7 @@ def read_paper_abstracts_from_file():
     with open('paper-abstracts.txt', 'r') as f:
         abstracts = f.read().split('\n')
     print('Number of abstracts: ' + str(len(abstracts)))
-    #for
-        #df['abstracts'] = abstracts
+    #for df['abstracts'] = abstracts
     return abstracts
 
 def get_data_from_web():
@@ -138,22 +159,24 @@ def get_data_from_web():
     links = get_paper_links_from_web()
     get_paper_abstracts_from_web(links)
 
-def get_data_from_txt():
+# Where do you use the links?
+def get_data_from_txt(df):
     titles = read_paper_titles_from_file(df)
-    abstracts = read_paper_abstracts_from_file()
-    return [titles, abstracts]
-
-if __name__ == '__main__':
-    get_data_from_txt()
+    read_paper_links_from_file(df)
+    read_paper_abstracts_from_file_to_df(df)
+    return df
 
 def run_all():
     get_data_from_web()
     get_data_from_txt()
 
-#run_all()
-read_paper_titles_from_file(df)
-read_paper_links_from_file(df)
-read_paper_abstracts_from_file_to_df(df)
-#get_paper_links_from_web()
+get_data_from_txt(df)
 
-print(df)
+# TODO FIXME - What Do I need to run to get a full dataframe to produce data? Put that into one file
+#print(df)
+
+#run_all()
+#read_paper_titles_from_file(df)
+#read_paper_links_from_file(df)
+#read_paper_abstracts_from_file_to_df(df)
+#get_paper_links_from_web()
