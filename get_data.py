@@ -78,9 +78,8 @@ def read_paper_links_from_file(df):
     df['Links'] = links
     return df
 
-
 # Get the abstracts from the web and save them to a text file
-def get_paper_abstracts_from_web(links):
+def get_paper_abstracts_from_web_old(links):
     # Store all of the abstracts in abstract_list
     abstract_list = []
     for link in links:
@@ -102,52 +101,39 @@ def get_paper_abstracts_from_web(links):
         for abstract in abstract_list:
             f.write(abstract+ '\n')
 
-
-
 # TODO - for each row of dataframe: get a link, try scraping abstract, put in abstract column of the row
 # Put each abstract into its respective place in the dataframe, where title, link, and abstract for a paper are on one row
-def read_paper_abstracts_from_file_to_df(df):
+def get_paper_abstracts_from_web(df):
     print(df)
-    abstract_list = []
 
+    df['Abstracts'] = np.nan
     # Get a series object of all the links to paper's URLs
     links = df.loc[:, 'Links']
 
+    row = 0
     for link in iter(links):
         print(link)
         try:
             paper_page = requests.get(link)
             tree_1 = html.fromstring(paper_page.content)
             abstracts = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
-            # TODO Append that mother fucker to that part of the dataframe under 'Abstracts'
-        except (requests.exceptions.MissingSchema):
-            print('Missing link')
-            # TODO put -1 in that row of the dataframe under 'Abstracts'
-
-    """
-    for row in df.iterrows():
-        link = df.loc[row,'Links']
-        print(link)
-        try:
-            paper_page = requests.get(link)
-            tree_1 = html.fromstring(paper_page.content)
-            abstracts = tree_1.xpath('//div[@class="abstractContainer"]/p/text()')
-            # Since abstracts should be a list of length 1
+            # Append the abstract list to that paper's row of the dataframe under 'Abstracts'
             for abstract in abstracts:
-                #df.loc[row, 'Abstracts'] = abstract
-                df.insert(row, 'Abstract')
-        except (requests.exceptions.MissingSchema):
+                print(abstract)
+                df.loc[row, 'Abstracts'] = abstract
+        except requests.exceptions.MissingSchema:
             print('Missing link')
-
-
-    """
-
+            # Put -1 in that row of the dataframe under 'Abstracts'
+            df.loc[row, 'Abstracts'] = 'None'
+        row = row + 1
+    df.to_csv('Papers-titles-abstracts.csv')
     return df
 
+# TODO -decide if we want to get rid of this function and change the above to the name of this method
 # Read the abstracts in from a txt file
 # FIXME - issue is that there are less abstracts that titles, so when we read from file we
 # dont know which abstract belongs to which title / which row of df
-def read_paper_abstracts_from_file():
+def read_paper_abstracts_from_file_():
     with open('paper-abstracts.txt', 'r') as f:
         abstracts = f.read().split('\n')
     print('Number of abstracts: ' + str(len(abstracts)))
@@ -159,11 +145,11 @@ def get_data_from_web():
     links = get_paper_links_from_web()
     get_paper_abstracts_from_web(links)
 
-# Where do you use the links?
+# Where do you use the links? Already used them in get_data_from_web, right?
 def get_data_from_txt(df):
     titles = read_paper_titles_from_file(df)
     read_paper_links_from_file(df)
-    read_paper_abstracts_from_file_to_df(df)
+    get_paper_abstracts_from_web(df)
     return df
 
 def run_all():
@@ -171,6 +157,7 @@ def run_all():
     get_data_from_txt()
 
 get_data_from_txt(df)
+#df.to_csv('Papers.csv')
 
 # TODO FIXME - What Do I need to run to get a full dataframe to produce data? Put that into one file
 #print(df)
