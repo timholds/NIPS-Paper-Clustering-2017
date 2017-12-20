@@ -50,7 +50,6 @@ def tokenize_only(text):
             filtered_tokens.append(token)
     return filtered_tokens
 
-
 totalvocab_stemmed = []
 totalvocab_tokenized = []
 for i in abstracts:
@@ -64,14 +63,11 @@ vocab_frame = pd.DataFrame({'words': totalvocab_tokenized}, index=totalvocab_ste
 
 # nltk.download('punkt')
 
-for max in np.linspace(0.5, 1.0, num=10):
-#for max in range(.50, 1.00, .05):
-    TfidfVectorizer(max_df=max, max_features=200000,
-                    min_df=0.065, stop_words='english',
-                    use_idf=True, tokenizer=tokenize_and_stem, ngram_range=(1, 3))
+for min in np.linspace(0.04, .2, num=16):
+    print('The hyperparmeter for min_df is: ' + str(min))
 
     tfidf_vectorizer = TfidfVectorizer(max_df=.8, max_features=200000,
-                               min_df=0.065, stop_words='english',
+                               min_df=min, stop_words='english',
                                use_idf=True, tokenizer=tokenize_and_stem, ngram_range=(1, 3))
 
     tfidf_matrix = tfidf_vectorizer.fit_transform(abstracts)
@@ -82,7 +78,7 @@ for max in np.linspace(0.5, 1.0, num=10):
     print(terms)
     dist = 1 - cosine_similarity(tfidf_matrix)
 
-    for i in range(1, 20):
+    for i in range(1, 12):
         print('Number of clusters: ' + str(i))
         num_clusters = i
         km = KMeans(n_clusters=num_clusters)
@@ -91,8 +87,8 @@ for max in np.linspace(0.5, 1.0, num=10):
         print()
         print()
         order_centroids = km.cluster_centers_.argsort()[:, ::-1]
-        # J because any more than 12 words per category will become way too overfitted
-        for j in range(1, 12):
+        # J up to 8 because any more than 8 words per category will become too overfitted
+        for j in range(1, 8):
             print()
             print('-------------------------------')
             print()
