@@ -151,19 +151,4 @@ def get_data_from_txt(df):
     read_paper_links_from_file(df)
     get_paper_abstracts_from_web(df)
     return df
-
-def run_all():
-    get_data_from_web()
-    get_data_from_txt()
-
-get_data_from_txt(df)
-#df.to_csv('Papers.csv')
-
-# TODO FIXME - What Do I need to run to get a full dataframe to produce data? Put that into one file
-#print(df)
-
-#run_all()
-#read_paper_titles_from_file(df)
-#read_paper_links_from_file(df)
-#read_paper_abstracts_from_file_to_df(df)
-#get_paper_links_from_web()
+    
