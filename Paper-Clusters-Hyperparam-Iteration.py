@@ -125,35 +125,3 @@ clusters = km.labels_.tolist()
 
 print("Top terms per cluster:")
 print()
-
-#order_centroids = km.cluster_centers_.argsort()[:, ::-1]
-#num_clusters = 10
-
-# Iterate through values of number of words per cluster
-# Iterate through different numbers of clusters
-# Picking 15 because
-"""def run_the_jewels():
-    for n in range(2, 15):
-        print()
-        print()
-        num_clusters = n
-        #order_centroids = km.cluster_centers_.argsort()[:, ::-1]
-        # J because anything more than 12 seems excessive, diminishing returns
-        for j in range(1, 12):
-            print()
-            print('-------------------------------')
-            print()
-            print('Number of clusters is: ' + str(n))
-            print('Number of feature words per cluster: ' + str(j))
-            print()
-            #print('J equals: ' + str(j))
-            for i in range(num_clusters):
-                print()
-                print("Cluster %d words:" % (i+1), end='')
-                #print()
-                #print()
-                for ind in order_centroids[i, :j]:
-                    print(' %s' % vocab_frame.loc[terms[ind].split(' ')].values.tolist()[0][0].encode('utf-8', 'ignore'), end=',')
-                    print()
-                    #print()
-"""
