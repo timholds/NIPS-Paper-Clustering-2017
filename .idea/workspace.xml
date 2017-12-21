@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ed1c0646-2b95-498b-9925-bd452e5a7781" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/document_cluster" afterPath="$PROJECT_DIR$/document_cluster" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -36,17 +35,27 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Paper-Clusters-Hyperparam-Iteration.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Paper-Clusters-Hyperparam-Iteration.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Paper-Clusters-Hyperparam-Iteration.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="295">
-              <caret line="127" column="0" lean-forward="true" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+              <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
                 <element signature="e#962#1449#0" expanded="false" />
                 <element signature="e#1481#1931#0" expanded="false" />
                 <element signature="e#2007#2189#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="text.py" pinned="false" current-in-tab="true">
+        <entry file="file:///anaconda/pkgs/scikit-learn-0.19.1-py35h2b554eb_0/lib/python3.5/site-packages/sklearn/feature_extraction/text.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="274">
+              <caret line="1380" column="12" lean-forward="false" selection-start-line="1380" selection-start-column="12" selection-end-line="1380" selection-end-column="12" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -91,10 +100,11 @@
       <find>links</find>
       <find>vocab_fram</find>
       <find>vocab_fra</find>
-      <find>max</find>
       <find>max_df</find>
       <find>min</find>
       <find>min_df</find>
+      <find>max</find>
+      <find>tfidfvectorizer</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -614,13 +624,21 @@
     <entry file="file://$PROJECT_DIR$/Paper-Clusters-Hyperparam-Iteration.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="295">
-          <caret line="127" column="0" lean-forward="true" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+          <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
             <element signature="e#962#1449#0" expanded="false" />
             <element signature="e#1481#1931#0" expanded="false" />
             <element signature="e#2007#2189#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///anaconda/pkgs/scikit-learn-0.19.1-py35h2b554eb_0/lib/python3.5/site-packages/sklearn/feature_extraction/text.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="1380" column="12" lean-forward="false" selection-start-line="1380" selection-start-column="12" selection-end-line="1380" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>
